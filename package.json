@@ -4,6 +4,9 @@
   "description": "Wait for your props to be available before rendering a component",
   "main": "index.js",
   "types": "index.d.ts",
+  "scripts": {
+    "test": "mocha 'test.specs.ts' --require ts-node/register && mocha 'test.specs.js' --require @babel/register"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Methrat0n/Lazy-Props.git"
@@ -15,7 +18,18 @@
   },
   "homepage": "https://github.com/Methrat0n/Lazy-Props#readme",
   "devDependencies": {
+    "@babel/core": "^7.7.7",
+    "@babel/preset-env": "^7.7.7",
+    "@babel/register": "^7.7.7",
+    "@types/chai": "^4.2.7",
+    "@types/chai-as-promised": "^7.1.2",
+    "@types/mocha": "^5.2.7",
     "@types/react": "^16.9.17",
-    "react": "^16.12.0"
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
+    "mocha": "^6.2.2",
+    "react": "^16.12.0",
+    "ts-node": "^8.5.2",
+    "typescript": "^3.7.2"
   }
 }

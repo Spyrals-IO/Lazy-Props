@@ -58,12 +58,14 @@ SOFTWARE.
  * const Dashboard = lazy(() => lazyProps(LazyFruitboard, Promise.all([bananas, ananas, apples]), ['bananas', 'ananas', 'apples']))
  * ```
  */
-exports.default = function lazyProps(LazyComponent, willBeProps, propsNames) {
-  if(hasDuplicates(propsNames)) {
-    return Promise.reject(new Error('propsNames cannot contains duplicate as it\' suppose to properties names'))
-  }
+exports.lazyProps = function(LazyComponent, willBeProps, propsNames) {
+  if(hasDuplicates(propsNames))
+    return Promise.reject(new Error('propsNames cannot contains duplicate as it\'s suppose to be property names'))
+  
   return LazyComponent.then(function(Component) {
     return  willBeProps.then(function(props) {
+      if(!Array.isArray(props) && Array.isArray(propsNames))
+        return Promise.reject(new Error('If propsNames is an array willBeProps inside should be one too'))
       if(Array.isArray(props) && Array.isArray(propsNames) && props.length !== propsNames.length)
         return Promise.reject(new Error('Both willBeProps inside array and propsName need to be of the same length'));
       else if(Array.isArray(props) && Array.isArray(propsNames) && props.length === propsNames.length)
@@ -71,7 +73,7 @@ exports.default = function lazyProps(LazyComponent, willBeProps, propsNames) {
       else
         return { 'default': (remainingProps) => React.createElement(Component.default, {[propsNames]: props, ...remainingProps}) };
       })
-  }
+  })
 }
 
 function buildPropsByNames(props, names) {
@@ -86,10 +88,10 @@ function hasDuplicates(names) {
   let nameSoFar = Object.create(null);
   for (let i = 0; i < names.length; ++i) {
       let name = names[i];
-      if (name in valuesSoFar) {
+      if (name in nameSoFar) {
           return true;
       }
-      nameSoFar[value] = true;
+      nameSoFar[name] = true;
   }
   return false;
 }
