@@ -1,0 +1,21 @@
+{
+  "name": "lazy-props",
+  "version": "1.0.0",
+  "description": "Wait for your props to be available before rendering a component",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Methrat0n/Lazy-Props.git"
+  },
+  "author": "Merlin Goulet <merlin.goulet@live.fr>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Methrat0n/Lazy-Props/issues"
+  },
+  "homepage": "https://github.com/Methrat0n/Lazy-Props#readme",
+  "devDependencies": {
+    "@types/react": "^16.9.17",
+    "react": "^16.12.0"
+  }
+}
