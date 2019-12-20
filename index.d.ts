@@ -32,6 +32,12 @@ type Omit<T, K extends keyof T> = Pick<T, Diff<keyof T, K>>
  * @param {Promise.<any | any[]>} willBeProps one or more laey props inside a single promise.
  * @param {string | string[]} propsNames a set of props name for the component pass as `LazyComponent`
  * 
+ * @returns {Promise<{default: (props: any) => JSX.Element}>} 
+ *   a new promise component with the same props as `LazyComponent` except the one in `willBeProps`
+ *   or a failed promise with an error. Possible errors :
+ *     - `propsNames` not a set, meaning there is duplicate inside.
+ *     - `willBeProps` and `propsNames` are not of the same size.
+ * 
  * Examples:
  *  - If you have a single lazy props
  * 
@@ -44,7 +50,7 @@ type Omit<T, K extends keyof T> = Pick<T, Diff<keyof T, K>>
  * const Dashboard = lazy(() => lazyProps(LazyDashboard, usersService, 'usersService')) //Dashboard is a component taking only it's remaining props
  * ```
  * 
- * - With multiple lazy props
+ * - With multiples lazy props
  * 
  * ```js
  * import lazyProps from 'lazy-props'
