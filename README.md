@@ -71,7 +71,7 @@ return (
   )
 ...
 ```
-That's better in terms of user experience, but now you have two loadings one after the other. It may seems fine in this simple case, but real applications get real messy. We would like to avoid duplication.
+That's better in terms of user experience, but now you have two loadings one after the other. It may seems fine in this simple case, but real applications get really messy. We would like to avoid duplication.
 
 The idea behind `lazy-props` is __"Why not just use the `lazy` and `Suspense` already provided to us ?"__
 
