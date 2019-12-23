@@ -22,6 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+const React = require('react')
+
 /**
  * @param {Promise.<{default: (props: P) => JSX.Element}>} LazyComponent A module imported using the `import()`syntax
  * @param {Promise.<any | any[]>} willBeProps one or more laey props inside a single promise.
