@@ -96,6 +96,13 @@ const App = () => {
 
 As you can see, using `lazy-props` in coordination with `lazy` and `Suspense` we get a unified way of async props.
 
+_Notes: It can also work with the component being normaly imported_
+
+```js
+import MyComponent from './MyComponent'
+//instead of
+const LazyMyComponent = import('./MyComponent')
+```
 ## Typescript
 
 `lazy-props` was designed in Typescript and then written in Javascript for portability. Typing is provided with the library and is as tight and type-safe as possible.
