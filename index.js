@@ -22,6 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+const React = require('react')
+
 /**
  * @param {Promise.<{default: (props: P) => JSX.Element}>} LazyComponent A module imported using the `import()`syntax
  * @param {Promise.<any | any[]>} willBeProps one or more laey props inside a single promise.
@@ -69,7 +71,7 @@ exports.lazyProps = function(LazyComponent, willBeProps, propsNames) {
       if(Array.isArray(props) && Array.isArray(propsNames) && props.length !== propsNames.length)
         return Promise.reject(new Error('Both willBeProps inside array and propsName need to be of the same length'));
       else if(Array.isArray(props) && Array.isArray(propsNames) && props.length === propsNames.length)
-        return { 'default': (remainingProps) => React.createElement(Component.default, Object.assign(remainingProps, buildPropsByNames(props, propsNames))) };
+        return { 'default': (remainingProps) => React.createElement(Component.default, { ...remainingProps, ...buildPropsByNames(props, propsNames)})};
       else
         return { 'default': (remainingProps) => React.createElement(Component.default, {[propsNames]: props, ...remainingProps}) };
       })

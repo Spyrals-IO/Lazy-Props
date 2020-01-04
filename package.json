@@ -1,6 +1,6 @@
 {
   "name": "lazy-props",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "Wait for your props to be available before rendering a component",
   "main": "index.js",
   "types": "index.d.ts",
