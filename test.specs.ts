@@ -9,6 +9,16 @@ const expect = chai.expect
 import { lazyProps } from '.'
 
 describe('lazy-props', () => {
+  it('should return a component with one lazy props for local components', () => {
+    interface DivProps {
+      cats: string[]
+    }
+    const component = ({cats}: DivProps) => React.createElement('div', {children: cats})
+    const props: Promise<string[]> = Promise.resolve(['Mufasa', 'Scar', 'Simba'])
+
+    const found = lazyProps(component, props, 'cats')
+    return expect(found.then(newComponent => React.createElement(newComponent.default))).to.be.fulfilled
+  })
   it('should return a component with one lazy props', () => {
     interface DivProps {
       cats: string[]
