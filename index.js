@@ -60,7 +60,7 @@ const React = require('react')
  * const Dashboard = lazy(() => lazyProps(LazyFruitboard, Promise.all([bananas, ananas, apples]), ['bananas', 'ananas', 'apples']))
  * ```
  * 
- * - With a local or normaly importered Component
+ * - With a local or normally importered Component
  * 
  * ```js
  * import lazyProps from 'lazy-props'

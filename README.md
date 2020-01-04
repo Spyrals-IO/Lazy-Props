@@ -96,7 +96,7 @@ const App = () => {
 
 As you can see, using `lazy-props` in coordination with `lazy` and `Suspense` we get a unified way of async props.
 
-_Notes: It can also work with the component being normaly imported_
+_Notes: It can also work with the component being normally imported_
 
 ```js
 import MyComponent from './MyComponent'
