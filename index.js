@@ -25,12 +25,12 @@ SOFTWARE.
 const React = require('react')
 
 /**
- * @param {Promise.<{default: (props: P) => JSX.Element}>} LazyComponent A module imported using the `import()`syntax
+ * @param {Promise.<{default: (props: P) => JSX.Element}> | (props: P) => JSX.Element } Component A module imported using the `import()`syntax or a simple Component
  * @param {Promise.<any | any[]>} willBeProps one or more laey props inside a single promise.
  * @param {string | string[]} propsNames a set of props name for the component pass as `LazyComponent`
  * 
  * @returns {Promise<{default: (props: any) => JSX.Element}>} 
- *   a new promise component with the same props as `LazyComponent` except the one in `willBeProps`
+ *   a new promise component with the same props as `Component` except the one in `willBeProps`
  *   or a failed promise with an error. Possible errors :
  *     - `propsNames` not a set, meaning there is duplicate inside.
  *     - `willBeProps` and `propsNames` are not of the same size.
@@ -59,11 +59,29 @@ const React = require('react')
  * const LazyFruitboard = import('...') //your component
  * const Dashboard = lazy(() => lazyProps(LazyFruitboard, Promise.all([bananas, ananas, apples]), ['bananas', 'ananas', 'apples']))
  * ```
+ * 
+ * - With a local or normally importered Component
+ * 
+ * ```js
+ * import lazyProps from 'lazy-props'
+ * 
+ * const bananas = ... //Some promise
+ * const ananas = ... //Also a promise, best one
+ * const apples = ... //Again, a promise
+ * 
+ * import Fruitboard from '...'
+ * 
+ * const SimplerFruitBoard = lazy(() => lazyProps(Fruitboard, Promise.all([bananas, ananas, apples]), ['bananas', 'ananas', 'apples']))
+ * ```
  */
-exports.lazyProps = function(LazyComponent, willBeProps, propsNames) {
+exports.lazyProps = function(Component, willBeProps, propsNames) {
   if(hasDuplicates(propsNames))
     return Promise.reject(new Error('propsNames cannot contains duplicate as it\'s suppose to be property names'))
   
+  let LazyComponent = Component
+  if(!(Component instanceof Promise))
+    LazyComponent = Promise.resolve({'default': Component})
+
   return LazyComponent.then(function(Component) {
     return  willBeProps.then(function(props) {
       if(!Array.isArray(props) && Array.isArray(propsNames))
