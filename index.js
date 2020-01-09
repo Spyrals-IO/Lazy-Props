@@ -75,7 +75,7 @@ const React = require('react')
  * ```
  */
 exports.lazyProps = function(Component, willBeProps, propsNames) {
-  if(hasDuplicates(propsNames))
+  if(Array.isArray(propsNames) && hasDuplicates(propsNames))
     return Promise.reject(new Error('propsNames cannot contains duplicate as it\'s suppose to be property names'))
   
   let LazyComponent = Component
