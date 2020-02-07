@@ -77,4 +77,4 @@ export function lazyProps<PartialProps extends {}, Props extends PartialProps>(C
 export function lazyProps<PartialProps extends {}, Props extends PartialProps>(Component: (props: Props) => JSX.Element, willBeProps: Promise<PartialProps>): Promise<{default: (newProps: Omit<Props, keyof PartialProps>) => JSX.Element}>
 export function lazyProps<PartialProps extends {}, Props extends PartialProps>(Component: (props: Props) => JSX.Element, willBeProps: Promisify<PartialProps>): Promise<{default: (newProps: Omit<Props, keyof PartialProps>) => JSX.Element}>
 
-type Promisify<T> = { [K in keyof T]: Promise<T[K]> }
+type Promisify<T> = { [K in keyof T]: Promise<T[K]> | T[K] }
