@@ -24,15 +24,12 @@ SOFTWARE.
 /// <reference types="react" />
 
 /**
- * @param {Promise.<{default: (props: P) => JSX.Element}> | (props: P) => JSX.Element } Component A module imported using the `import()`syntax or a simple Component
- * @param {Promise.<any | any[]>} willBeProps one or more laey props inside a single promise.
- * @param {string | string[]} propsNames a set of props name for the component pass as `LazyComponent`
+ * @param Component A module imported using the `import()`syntax or a simple Component
+ * @param willBeProps one or more laey props inside a single promise.
  * 
  * @returns {Promise<{default: (props: any) => JSX.Element}>} 
  *   a new promise component with the same props as `Component` except the one in `willBeProps`
- *   or a failed promise with an error. Possible errors :
- *     - `propsNames` not a set, meaning there is duplicate inside.
- *     - `willBeProps` and `propsNames` are not of the same size.
+ *   or a failed promise with an error.
  * 
  * Examples:
  *  - If you have a single lazy props
@@ -43,7 +40,7 @@ SOFTWARE.
  * const usersService = ... //Some promise, say the rest service for your users
  * const LazyDashboard = import('...') //your component
  * 
- * const Dashboard = lazy(() => lazyProps(LazyDashboard, usersService, 'usersService')) //Dashboard is a component taking only it's remaining props
+ * const Dashboard = lazy(() => lazyProps(LazyDashboard, { usersService })) //Dashboard is a component taking only it's remaining props
  * ```
  * 
  * - With multiple lazy props
@@ -56,7 +53,7 @@ SOFTWARE.
  * const apples = ... //Again, a promise
  * 
  * const LazyFruitboard = import('...') //your component
- * const Dashboard = lazy(() => lazyProps(LazyFruitboard, Promise.all([bananas, ananas, apples]), ['bananas', 'ananas', 'apples']))
+ * const Dashboard = lazy(() => lazyProps(LazyFruitboard, {bananas, ananas, apples}))
  * ```
  * 
  * - With a local or normally importered Component
@@ -70,27 +67,14 @@ SOFTWARE.
  * 
  * import Fruitboard from '...'
  * 
- * const SimplerFruitBoard = lazy(() => lazyProps(Fruitboard, Promise.all([bananas, ananas, apples]), ['bananas', 'ananas', 'apples']))
+ * const SimplerFruitBoard = lazy(() => lazyProps(Fruitboard, {bananas, ananas, apples}))
  * ```
  */
-export function lazyProps<P extends {}, key extends keyof P>(Component: Promise<{default: (props: P) => JSX.Element}>, willBeProps: Promise<P[key]>, propsNames: key): Promise<{default: (newProps: Omit<P, key>) => JSX.Element}>
-export function lazyProps<P extends {}, key1 extends keyof P, key2 extends keyof P>(Component: Promise<{default: (props: P) => JSX.Element}>, willBeProps: Promise<[P[key1], P[key2]]>, propsNames: [key1, key2]): Promise<{default: (newProps: Omit<Omit<P, key1>, key2>) => JSX.Element}>
-export function lazyProps<P extends {}, key1 extends keyof P, key2 extends keyof P, key3 extends keyof P>(Component: Promise<{default: (props: P) => JSX.Element}>, willBeProps: Promise<[P[key1], P[key2], P[key3]]>, propsNames: [key1, key2, key3]): Promise<{default: (newProps: Omit<Omit<Omit<P, key1>, key2>, key3>) => JSX.Element}>
-export function lazyProps<P extends {}, key1 extends keyof P, key2 extends keyof P, key3 extends keyof P, key4 extends keyof P>(Component: Promise<{default: (props: P) => JSX.Element}>, willBeProps: Promise<[P[key1], P[key2], P[key3], P[key4]]>, propsNames: [key1, key2, key3, key4]): Promise<{default: (newProps: Omit<Omit<Omit<Omit<P, key1>, key2>, key3>, key4>) => JSX.Element}>
-export function lazyProps<P extends {}, key1 extends keyof P, key2 extends keyof P, key3 extends keyof P, key4 extends keyof P, key5 extends keyof P>(Component: Promise<{default: (props: P) => JSX.Element}>, willBeProps: Promise<[P[key1], P[key2], P[key3], P[key4], P[key5]]>, propsNames: [key1, key2, key3, key4, key5]): Promise<{default: (newProps: Omit<Omit<Omit<Omit<Omit<P, key1>, key2>, key3>, key4>, key5>) => JSX.Element}>
-export function lazyProps<P extends {}, key1 extends keyof P, key2 extends keyof P, key3 extends keyof P, key4 extends keyof P, key5 extends keyof P, key6 extends keyof P>(Component: Promise<{default: (props: P) => JSX.Element}>, willBeProps: Promise<[P[key1], P[key2], P[key3], P[key4], P[key5], P[key6]]>, propsNames: [key1, key2, key3, key4, key5, key6]): Promise<{default: (newProps: Omit<Omit<Omit<Omit<Omit<Omit<P, key1>, key2>, key3>, key4>, key5>, key6>) => JSX.Element}>
-export function lazyProps<P extends {}, key1 extends keyof P, key2 extends keyof P, key3 extends keyof P, key4 extends keyof P, key5 extends keyof P, key6 extends keyof P, key7 extends keyof P>(Component: Promise<{default: (props: P) => JSX.Element}>, willBeProps: Promise<[P[key1], P[key2], P[key3], P[key4], P[key5], P[key6], P[key7]]>, propsNames: [key1, key2, key3, key4, key5, key6, key7]): Promise<{default: (newProps: Omit<Omit<Omit<Omit<Omit<Omit<Omit<P, key1>, key2>, key3>, key4>, key5>, key6>, key7>) => JSX.Element}>
-export function lazyProps<P extends {}, key1 extends keyof P, key2 extends keyof P, key3 extends keyof P, key4 extends keyof P, key5 extends keyof P, key6 extends keyof P, key7 extends keyof P, key8 extends keyof P>(Component: Promise<{default: (props: P) => JSX.Element}>, willBeProps: Promise<[P[key1], P[key2], P[key3], P[key4], P[key5], P[key6], P[key7], P[key8]]>, propsNames: [key1, key2, key3, key4, key5, key6, key7, key8]): Promise<{default: (newProps: Omit<Omit<Omit<Omit<Omit<Omit<Omit<Omit<P, key1>, key2>, key3>, key4>, key5>, key6>, key7>, key8>) => JSX.Element}>
-export function lazyProps<P extends {}, key1 extends keyof P, key2 extends keyof P, key3 extends keyof P, key4 extends keyof P, key5 extends keyof P, key6 extends keyof P, key7 extends keyof P, key8 extends keyof P, key9 extends keyof P>(Component: Promise<{default: (props: P) => JSX.Element}>, willBeProps: Promise<[P[key1], P[key2], P[key3], P[key4], P[key5], P[key6], P[key7], P[key8], P[key9]]>, propsNames: [key1, key2, key3, key4, key5, key6, key7, key8, key9]): Promise<{default: (newProps: Omit<Omit<Omit<Omit<Omit<Omit<Omit<Omit<Omit<P, key1>, key2>, key3>, key4>, key5>, key6>, key7>, key8>, key9>) => JSX.Element}>
-export function lazyProps<P extends {}, key1 extends keyof P, key2 extends keyof P, key3 extends keyof P, key4 extends keyof P, key5 extends keyof P, key6 extends keyof P, key7 extends keyof P, key8 extends keyof P, key9 extends keyof P, key10 extends keyof P>(Component: Promise<{default: (props: P) => JSX.Element}>, willBeProps: Promise<[P[key1], P[key2], P[key3], P[key4], P[key5], P[key6], P[key7], P[key8], P[key9], P[key10]]>, propsNames: [key1, key2, key3, key4, key5, key6, key7, key8, key9, key10]): Promise<{default: (newProps: Omit<Omit<Omit<Omit<Omit<Omit<Omit<Omit<Omit<Omit<P, key1>, key2>, key3>, key4>, key5>, key6>, key7>, key8>, key9>, key10>) => JSX.Element}>
+export function lazyProps<PartialProps extends {}, Props extends PartialProps>(Component: Promise<{default: (props: Props) => JSX.Element}>, willBeProps: PartialProps): Promise<{default: (newProps: Omit<Props, keyof PartialProps>) => JSX.Element}>
+export function lazyProps<PartialProps extends {}, Props extends PartialProps>(Component: Promise<{default: (props: Props) => JSX.Element}>, willBeProps: Promise<PartialProps> ): Promise<{default: (newProps: Omit<Props, keyof PartialProps>) => JSX.Element}>
+export function lazyProps<PartialProps extends {}, Props extends PartialProps>(Component: Promise<{default: (props: Props) => JSX.Element}>, willBeProps: Promisify<PartialProps> ): Promise<{default: (newProps: Omit<Props, keyof PartialProps>) => JSX.Element}>
+export function lazyProps<PartialProps extends {}, Props extends PartialProps>(Component: (props: Props) => JSX.Element, willBeProps: PartialProps): Promise<{default: (newProps: Omit<Props, keyof PartialProps>) => JSX.Element}>
+export function lazyProps<PartialProps extends {}, Props extends PartialProps>(Component: (props: Props) => JSX.Element, willBeProps: Promise<PartialProps>): Promise<{default: (newProps: Omit<Props, keyof PartialProps>) => JSX.Element}>
+export function lazyProps<PartialProps extends {}, Props extends PartialProps>(Component: (props: Props) => JSX.Element, willBeProps: Promisify<PartialProps>): Promise<{default: (newProps: Omit<Props, keyof PartialProps>) => JSX.Element}>
 
-export function lazyProps<P extends {}, key extends keyof P>(Component: (props: P) => JSX.Element, willBeProps: Promise<P[key]>, propsNames: key): Promise<{default: (newProps: Omit<P, key>) => JSX.Element}>
-export function lazyProps<P extends {}, key1 extends keyof P, key2 extends keyof P>(Component: (props: P) => JSX.Element, willBeProps: Promise<[P[key1], P[key2]]>, propsNames: [key1, key2]): Promise<{default: (newProps: Omit<Omit<P, key1>, key2>) => JSX.Element}>
-export function lazyProps<P extends {}, key1 extends keyof P, key2 extends keyof P, key3 extends keyof P>(Component: (props: P) => JSX.Element, willBeProps: Promise<[P[key1], P[key2], P[key3]]>, propsNames: [key1, key2, key3]): Promise<{default: (newProps: Omit<Omit<Omit<P, key1>, key2>, key3>) => JSX.Element}>
-export function lazyProps<P extends {}, key1 extends keyof P, key2 extends keyof P, key3 extends keyof P, key4 extends keyof P>(Component: (props: P) => JSX.Element, willBeProps: Promise<[P[key1], P[key2], P[key3], P[key4]]>, propsNames: [key1, key2, key3, key4]): Promise<{default: (newProps: Omit<Omit<Omit<Omit<P, key1>, key2>, key3>, key4>) => JSX.Element}>
-export function lazyProps<P extends {}, key1 extends keyof P, key2 extends keyof P, key3 extends keyof P, key4 extends keyof P, key5 extends keyof P>(Component: (props: P) => JSX.Element, willBeProps: Promise<[P[key1], P[key2], P[key3], P[key4], P[key5]]>, propsNames: [key1, key2, key3, key4, key5]): Promise<{default: (newProps: Omit<Omit<Omit<Omit<Omit<P, key1>, key2>, key3>, key4>, key5>) => JSX.Element}>
-export function lazyProps<P extends {}, key1 extends keyof P, key2 extends keyof P, key3 extends keyof P, key4 extends keyof P, key5 extends keyof P, key6 extends keyof P>(Component: (props: P) => JSX.Element, willBeProps: Promise<[P[key1], P[key2], P[key3], P[key4], P[key5], P[key6]]>, propsNames: [key1, key2, key3, key4, key5, key6]): Promise<{default: (newProps: Omit<Omit<Omit<Omit<Omit<Omit<P, key1>, key2>, key3>, key4>, key5>, key6>) => JSX.Element}>
-export function lazyProps<P extends {}, key1 extends keyof P, key2 extends keyof P, key3 extends keyof P, key4 extends keyof P, key5 extends keyof P, key6 extends keyof P, key7 extends keyof P>(Component: (props: P) => JSX.Element, willBeProps: Promise<[P[key1], P[key2], P[key3], P[key4], P[key5], P[key6], P[key7]]>, propsNames: [key1, key2, key3, key4, key5, key6, key7]): Promise<{default: (newProps: Omit<Omit<Omit<Omit<Omit<Omit<Omit<P, key1>, key2>, key3>, key4>, key5>, key6>, key7>) => JSX.Element}>
-export function lazyProps<P extends {}, key1 extends keyof P, key2 extends keyof P, key3 extends keyof P, key4 extends keyof P, key5 extends keyof P, key6 extends keyof P, key7 extends keyof P, key8 extends keyof P>(Component: (props: P) => JSX.Element, willBeProps: Promise<[P[key1], P[key2], P[key3], P[key4], P[key5], P[key6], P[key7], P[key8]]>, propsNames: [key1, key2, key3, key4, key5, key6, key7, key8]): Promise<{default: (newProps: Omit<Omit<Omit<Omit<Omit<Omit<Omit<Omit<P, key1>, key2>, key3>, key4>, key5>, key6>, key7>, key8>) => JSX.Element}>
-export function lazyProps<P extends {}, key1 extends keyof P, key2 extends keyof P, key3 extends keyof P, key4 extends keyof P, key5 extends keyof P, key6 extends keyof P, key7 extends keyof P, key8 extends keyof P, key9 extends keyof P>(Component: (props: P) => JSX.Element, willBeProps: Promise<[P[key1], P[key2], P[key3], P[key4], P[key5], P[key6], P[key7], P[key8], P[key9]]>, propsNames: [key1, key2, key3, key4, key5, key6, key7, key8, key9]): Promise<{default: (newProps: Omit<Omit<Omit<Omit<Omit<Omit<Omit<Omit<Omit<P, key1>, key2>, key3>, key4>, key5>, key6>, key7>, key8>, key9>) => JSX.Element}>
-export function lazyProps<P extends {}, key1 extends keyof P, key2 extends keyof P, key3 extends keyof P, key4 extends keyof P, key5 extends keyof P, key6 extends keyof P, key7 extends keyof P, key8 extends keyof P, key9 extends keyof P, key10 extends keyof P>(Component: (props: P) => JSX.Element, willBeProps: Promise<[P[key1], P[key2], P[key3], P[key4], P[key5], P[key6], P[key7], P[key8], P[key9], P[key10]]>, propsNames: [key1, key2, key3, key4, key5, key6, key7, key8, key9, key10]): Promise<{default: (newProps: Omit<Omit<Omit<Omit<Omit<Omit<Omit<Omit<Omit<Omit<P, key1>, key2>, key3>, key4>, key5>, key6>, key7>, key8>, key9>, key10>) => JSX.Element}>
+type Promisify<T> = { [K in keyof T]: Promise<T[K]> }

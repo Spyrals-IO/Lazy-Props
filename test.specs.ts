@@ -8,15 +8,15 @@ const expect = chai.expect
 
 import { lazyProps } from '.'
 
-describe('lazy-props', () => {
+describe('lazy-props ts', () => {
   it('should return a component with one lazy props for local components', () => {
     interface DivProps {
       cats: string[]
     }
     const component = ({cats}: DivProps) => React.createElement('div', {children: cats})
-    const props: Promise<string[]> = Promise.resolve(['Mufasa', 'Scar', 'Simba'])
+    const cats: Promise<string[]> = Promise.resolve(['Mufasa', 'Scar', 'Simba'])
 
-    const found = lazyProps(component, props, 'cats')
+    const found = lazyProps(component, {cats})
     return expect(found.then(newComponent => React.createElement(newComponent.default))).to.be.fulfilled
   })
   it('should return a component with one lazy props', () => {
@@ -25,9 +25,9 @@ describe('lazy-props', () => {
     }
     const component = ({cats}: DivProps) => React.createElement('div', {children: cats})
     const lzyComponent = Promise.resolve({'default': component})
-    const props: Promise<string[]> = Promise.resolve(['Mufasa', 'Scar', 'Simba'])
+    const cats: Promise<string[]> = Promise.resolve(['Mufasa', 'Scar', 'Simba'])
 
-    const found = lazyProps(lzyComponent, props, 'cats')
+    const found = lazyProps(lzyComponent, {cats})
     return expect(found.then(newComponent => React.createElement(newComponent.default))).to.be.fulfilled
   })
   it('should return a component with three lazy props', () => {
@@ -42,22 +42,7 @@ describe('lazy-props', () => {
     const lazyDogs: Promise<string[]> = Promise.resolve(['Beethoven', 'Bolt', 'Ein'])
     const lazyFishes: Promise<string[]> = Promise.resolve(['Nemo', 'Dory', 'Marin'])
 
-    const found = lazyProps(lzyComponent, Promise.all([lazyCats, lazyDogs, lazyFishes]), ['cats', 'dogs', 'fishes'])
+    const found = lazyProps(lzyComponent, {cats: lazyCats, dogs: lazyDogs, fishes: lazyFishes})
     return expect(found.then(newComponent => React.createElement(newComponent.default))).to.be.fulfilled
-  })
-  it('should emit an error with duplicate propsNames', () => {
-    interface DivProps {
-      cats: string[]
-      dogs: string[]
-      fishes: string[]
-    }
-    const component = ({cats, dogs, fishes}: DivProps) => React.createElement('div', {children: cats.concat(dogs.concat(fishes))})
-    const lzyComponent = Promise.resolve({'default': component})
-    const lazyCats: Promise<string[]> = Promise.resolve(['Mufasa', 'Scar', 'Simba'])
-    const lazyDogs: Promise<string[]> = Promise.resolve(['Beethoven', 'Bolt', 'Ein'])
-    const lazyFishes: Promise<string[]> = Promise.resolve(['Nemo', 'Dory', 'Marin'])
-
-    const found = lazyProps(lzyComponent, Promise.all([lazyCats, lazyDogs, lazyFishes, lazyFishes]), ['cats', 'dogs', 'fishes', 'fishes'])
-    return expect(found.then(newComponent => React.createElement(newComponent.default))).to.be.rejectedWith('propsNames cannot contains duplicate as it\'s suppose to be property names')
   })
 })

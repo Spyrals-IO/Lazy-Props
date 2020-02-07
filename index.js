@@ -25,15 +25,12 @@ SOFTWARE.
 const React = require('react')
 
 /**
- * @param {Promise.<{default: (props: P) => JSX.Element}> | (props: P) => JSX.Element } Component A module imported using the `import()`syntax or a simple Component
- * @param {Promise.<any | any[]>} willBeProps one or more laey props inside a single promise.
- * @param {string | string[]} propsNames a set of props name for the component pass as `LazyComponent`
+ * @param Component A module imported using the `import()`syntax or a simple Component
+ * @param willBeProps one or more laey props inside a single promise.
  * 
  * @returns {Promise<{default: (props: any) => JSX.Element}>} 
  *   a new promise component with the same props as `Component` except the one in `willBeProps`
- *   or a failed promise with an error. Possible errors :
- *     - `propsNames` not a set, meaning there is duplicate inside.
- *     - `willBeProps` and `propsNames` are not of the same size.
+ *   or a failed promise with an error.
  * 
  * Examples:
  *  - If you have a single lazy props
@@ -44,7 +41,7 @@ const React = require('react')
  * const usersService = ... //Some promise, say the rest service for your users
  * const LazyDashboard = import('...') //your component
  * 
- * const Dashboard = lazy(() => lazyProps(LazyDashboard, usersService, 'usersService')) //Dashboard is a component taking only it's remaining props
+ * const Dashboard = lazy(() => lazyProps(LazyDashboard, { usersService })) //Dashboard is a component taking only it's remaining props
  * ```
  * 
  * - With multiple lazy props
@@ -57,7 +54,7 @@ const React = require('react')
  * const apples = ... //Again, a promise
  * 
  * const LazyFruitboard = import('...') //your component
- * const Dashboard = lazy(() => lazyProps(LazyFruitboard, Promise.all([bananas, ananas, apples]), ['bananas', 'ananas', 'apples']))
+ * const Dashboard = lazy(() => lazyProps(LazyFruitboard, {bananas, ananas, apples}))
  * ```
  * 
  * - With a local or normally importered Component
@@ -71,47 +68,27 @@ const React = require('react')
  * 
  * import Fruitboard from '...'
  * 
- * const SimplerFruitBoard = lazy(() => lazyProps(Fruitboard, Promise.all([bananas, ananas, apples]), ['bananas', 'ananas', 'apples']))
+ * const SimplerFruitBoard = lazy(() => lazyProps(Fruitboard, {bananas, ananas, apples}))
  * ```
  */
-exports.lazyProps = function(Component, willBeProps, propsNames) {
-  if(Array.isArray(propsNames) && hasDuplicates(propsNames))
-    return Promise.reject(new Error('propsNames cannot contains duplicate as it\'s suppose to be property names'))
-  
-  let LazyComponent = Component
+exports.lazyProps = (Component, willBeProps) => {
   if(!(Component instanceof Promise))
-    LazyComponent = Promise.resolve({'default': Component})
+    Component = Promise.resolve({'default': Component})
 
-  return LazyComponent.then(function(Component) {
-    return  willBeProps.then(function(props) {
-      if(!Array.isArray(props) && Array.isArray(propsNames))
-        return Promise.reject(new Error('If propsNames is an array willBeProps inside should be one too'))
-      if(Array.isArray(props) && Array.isArray(propsNames) && props.length !== propsNames.length)
-        return Promise.reject(new Error('Both willBeProps inside array and propsName need to be of the same length'));
-      else if(Array.isArray(props) && Array.isArray(propsNames) && props.length === propsNames.length)
-        return { 'default': (remainingProps) => React.createElement(Component.default, { ...remainingProps, ...buildPropsByNames(props, propsNames)})};
-      else
-        return { 'default': (remainingProps) => React.createElement(Component.default, {[propsNames]: props, ...remainingProps}) };
-      })
-  })
+  if(!(willBeProps instanceof Promise))
+    willBeProps = Promise.resolve(willBeProps)
+
+  return Component.then(Component =>
+    willBeProps.then(props => sequence(props)).then(props =>
+      ({ 'default': (remainingProps) => React.createElement(Component.default, {...props, ...remainingProps}) })
+    )
+  )
 }
 
-function buildPropsByNames(props, names) {
-  let obj = Object.create(null);
-  for(let i = 0; i < props.length; i++) {
-    obj[names[i]] = props[i];
-  }
-  return obj;
-}
+const sequence = (obj) =>
+  Object.keys(obj).reduce((acc, key) => {
+    if(!(obj[key] instanceof Promise))
+      obj[key] = Promise.resolve(obj[key])
 
-function hasDuplicates(names) {
-  let nameSoFar = Object.create(null);
-  for (let i = 0; i < names.length; ++i) {
-      let name = names[i];
-      if (name in nameSoFar) {
-          return true;
-      }
-      nameSoFar[name] = true;
-  }
-  return false;
-}
+    return acc.then(a => obj[key].then(value => ({...a, [key]: value})))
+  }, Promise.resolve({}))
