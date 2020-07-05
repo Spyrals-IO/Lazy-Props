@@ -77,7 +77,7 @@ The idea behind `lazy-props` is __"Why not just use the `lazy` and `Suspense` al
 
 ```js
 import React, {useState, useEffect, lazy, Suspense} from 'react'
-import { lazy-props } from 'lazy-props'
+import { lazyProps } from 'lazy-props'
 
 import { getUsers } from '../users'
 
