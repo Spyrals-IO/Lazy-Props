@@ -55,7 +55,7 @@ export default App
 
 As pointed above, `users` is initilized to undefined. In this setup, you will render `MyComponent` with no users. Then, when the server answer's actually come back, you will update the ui with actual users.
 
-This is bad because your client is seeing an empty screen withtout any explanation. Anyone would think _"I've got a bug."_.
+This is bad because your client is seeing an empty screen without any explanation. Anyone would think _"I've got a bug."_.
 
 To avoid this, some people actually wait for `users` to __not__ be undefined.
 
@@ -85,7 +85,7 @@ const LazyMyComponent = import('./MyComponent')
 
 const App = () => {
   
-  const MyComponent = lazy(() => lazyProps(LazyMyComponent, getUsers(), 'users'))
+  const MyComponent = lazy(() => lazyProps(LazyMyComponent, { users: getUsers() }))
 
   return (
     <Suspense fallback={<div>Loading</div>}>
